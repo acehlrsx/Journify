@@ -58,8 +58,16 @@ public class Homepage extends JFrame implements MouseListener, MouseMotionListen
         // Create buttons for the sidebar
         JButton homepageButton = createSidebarButton("HOMEPAGE");
         JButton createItineraryButton = createSidebarButton("CREATE ITINERARY");
+        createItineraryButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Open the Create Itinerary window
+                new CreateItinerary().setVisible(true);
+                dispose(); // Close the current window
+            }
+        });
         JButton historyButton = createSidebarButton("HISTORY");
         JButton logoutButton = createSidebarButton("LOGOUT");
+        logoutButton.addActionListener(e -> logout());
 
         // Add components to the sidebar
         sidebar.add(greetingLabel);
@@ -82,9 +90,9 @@ public class Homepage extends JFrame implements MouseListener, MouseMotionListen
         mainContent.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Create travel plan panels
-        JPanel travelPlanPanel1 = createTravelPlanPanel();
-        JPanel travelPlanPanel2 = createTravelPlanPanel();
-        JPanel travelPlanPanel3 = createTravelPlanPanel();
+        JPanel travelPlanPanel1 = createTravelPlanPanel("Travel Plan 1");
+        JPanel travelPlanPanel2 = createTravelPlanPanel("Travel Plan 2");
+        JPanel travelPlanPanel3 = createTravelPlanPanel("Travel Plan 3");
 
         // Add travel plan panels to the main content
         mainContent.add(travelPlanPanel1);
@@ -121,7 +129,7 @@ public class Homepage extends JFrame implements MouseListener, MouseMotionListen
         return button;
     }
 
-    private JPanel createTravelPlanPanel() {
+    private JPanel createTravelPlanPanel(String planName) {
         JPanel panel = new JPanel();
         panel.setBackground(Color.LIGHT_GRAY);
         panel.setPreferredSize(new Dimension(500, 100));
@@ -130,16 +138,37 @@ public class Homepage extends JFrame implements MouseListener, MouseMotionListen
                 BorderFactory.createLineBorder(new Color(220, 220, 220)),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         panel.setLayout(new BorderLayout());
-        JLabel label = new JLabel("PANEL FOR USER'S TRAVEL PLAN", SwingConstants.CENTER);
+        JLabel label = new JLabel(planName, SwingConstants.CENTER);
         label.setFont(new Font("Arial", Font.PLAIN, 14));
         panel.add(label, BorderLayout.CENTER);
+
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                travelPlanClicked(planName);
+            }
+        });
+
         return panel;
+    }
+
+    private void travelPlanClicked(String planName) {
+        JOptionPane.showMessageDialog(this, "You clicked on: " + planName, "Travel Plan Clicked", JOptionPane.INFORMATION_MESSAGE);
+        // Perform additional actions, like opening a detailed view of the travel plan
     }
 
     private void toggleSidebar() {
         sidebar.setVisible(!sidebar.isVisible());
         revalidate();
         repaint();
+    }
+
+    private void logout() {
+        JOptionPane.showMessageDialog(this, "Logout successful", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        SwingUtilities.invokeLater(() -> {
+            new LoginForm().setVisible(true); 
+            dispose();
+        });
     }
 
     // MouseListener methods
