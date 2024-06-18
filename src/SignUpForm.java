@@ -4,7 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class SignUpForm extends JFrame {
+public class SignUpForm extends JFrame implements MouseListener, MouseMotionListener {
+
+    private int mouseX, mouseY;
 
     public SignUpForm() {
         // Set frame properties
@@ -22,6 +24,8 @@ public class SignUpForm extends JFrame {
         // Create top bar panel (similar to Login form)
         JPanel topBar = new JPanel(new BorderLayout());
         topBar.setBackground(new Color(224, 31, 147));
+        topBar.addMouseListener(this);
+        topBar.addMouseMotionListener(this);
         mainPanel.add(topBar, BorderLayout.NORTH);
 
         // Close button (similar to Login form)
@@ -38,7 +42,7 @@ public class SignUpForm extends JFrame {
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(Color.WHITE);
         leftPanel.setPreferredSize(new Dimension(450, 500)); // Adjusted width
-        ImageIcon imageIcon = new ImageIcon("Journify\\\\images\\\\journifylogo.png"); // Placeholder image path
+        ImageIcon imageIcon = new ImageIcon("Journify\\images\\journifylogo.png"); // Placeholder image path
         Image scaledImage = imageIcon.getImage().getScaledInstance(350, 350, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         JLabel imgLabel = new JLabel(scaledIcon);
@@ -188,6 +192,41 @@ public class SignUpForm extends JFrame {
         // Add panels to main panel
         mainPanel.add(leftPanel, BorderLayout.WEST);
         mainPanel.add(rightPanel, BorderLayout.CENTER);
+    }
+
+    // MouseListener methods
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+
+    // MouseMotionListener method
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        int newX = e.getXOnScreen() - mouseX;
+        int newY = e.getYOnScreen() - mouseY;
+        setLocation(newX, newY);
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
     }
 
     // Method to open login form or dialog

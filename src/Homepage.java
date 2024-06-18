@@ -3,11 +3,13 @@ package src;
 import javax.swing.*;
 import javax.swing.border.AbstractBorder;
 import java.awt.*;
+import java.awt.event.*;
 
-public class Homepage extends JFrame {
+public class Homepage extends JFrame implements MouseListener, MouseMotionListener {
 
     private JPanel sidebar;
     private JLabel greetingLabel;
+    private int mouseX, mouseY;
 
     public Homepage(String username) {
         // Set frame properties
@@ -25,6 +27,8 @@ public class Homepage extends JFrame {
         // Create top bar panel
         JPanel topBar = new JPanel(new BorderLayout());
         topBar.setBackground(new Color(224, 31, 147));
+        topBar.addMouseListener(this);
+        topBar.addMouseMotionListener(this);
         mainPanel.add(topBar, BorderLayout.NORTH);
 
         // Create close button
@@ -136,6 +140,41 @@ public class Homepage extends JFrame {
         sidebar.setVisible(!sidebar.isVisible());
         revalidate();
         repaint();
+    }
+
+    // MouseListener methods
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+
+    // MouseMotionListener method
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        int newX = e.getXOnScreen() - mouseX;
+        int newY = e.getYOnScreen() - mouseY;
+        setLocation(newX, newY);
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
     }
 
     public static void main(String[] args) {
